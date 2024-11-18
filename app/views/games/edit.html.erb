@@ -1,0 +1,46 @@
+<h1>Edit Game</h1>
+
+<%= form_with model: @game, local: true do |form| %>
+  <% if @game.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(@game.errors.count, "error") %> prevented this game from being saved:</h2>
+      <ul>
+        <% @game.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :rank %>
+    <%= form.text_field :rank, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :main %>
+    <%= form.text_field :main, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :achievements, "Achievements (comma-separated)" %>
+    <%= form.text_field :achievements, value: @game.achievements&.join(", "), class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :join_date %>
+    <%= form.date_field :join_date, class: "form-control" %>
+  </div>
+
+  <div class="form-check mb-3">
+    <%= form.check_box :is_wishlist, class: "form-check-input" %>
+    <%= form.label :is_wishlist, "Add to Wishlist", class: "form-check-label" %>
+  </div>
+
+  <%= form.submit "Update Game", class: "btn btn-primary" %>
+<% end %>

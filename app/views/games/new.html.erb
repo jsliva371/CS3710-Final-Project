@@ -1,0 +1,48 @@
+<%= form_with model: [@profile, @game], local: true do |form| %>
+    <% if @game.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
+        <ul>
+          <% @game.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="form-group">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :rank %>
+      <%= form.text_field :rank, class: "form-control" %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :main %>
+      <%= form.text_field :main, class: "form-control" %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :achievements, "Achievements (comma-separated)" %>
+      <%= form.text_field :achievements, value: @game.achievements&.join(", "), class: "form-control" %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :join_date %>
+      <%= form.date_field :join_date, class: "form-control" %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :is_wishlist, "Add to Wishlist" %>
+      <%= form.check_box :is_wishlist %>
+    </div>
+  
+    <div class="mt-3">
+      <%= form.submit "Create Game", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+  
+  

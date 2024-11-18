@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  profile: one
+  name: MyString
+  rank: MyString
+  main: MyString
+  achievements: MyText
+  join_date: 2024-11-15
+  is_wishlist: false
+
+two:
+  profile: two
+  name: MyString
+  rank: MyString
+  main: MyString
+  achievements: MyText
+  join_date: 2024-11-15
+  is_wishlist: false

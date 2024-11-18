@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h2>Create Your Profile</h2>
+  <%= form_with model: @profile, local: true, class: "mt-3" do |form| %>
+    <div class="mb-3">
+      <%= form.label :username, class: "form-label" %>
+      <%= form.text_field :username, class: "form-control", placeholder: "Enter username" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :bio, class: "form-label" %>
+      <%= form.text_area :bio, class: "form-control", placeholder: "Tell us about yourself..." %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :platforms, "Gaming Platforms", class: "form-label" %>
+      <%= form.text_field :platforms, value: @profile.platforms.join(', '), class: "form-control", placeholder: "Enter platforms (comma-separated)" %>
+      <small class="text-muted">Example: PC, PlayStation, Xbox</small>
+    </div>
+
+    <%= form.submit "Create Profile", class: "btn btn-success" %>
+    <%= link_to "Cancel", root_path, class: "btn btn-secondary ms-2" %>
+  <% end %>
+</div>

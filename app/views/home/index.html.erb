@@ -1,0 +1,40 @@
+<h1>Home Page</h1>
+<h3>Here's a bunch of buttons for you</h3>
+
+<% if user_signed_in? %>
+  <p>Welcome back, <%= current_user.firstname %>!</p>
+  <%= link_to 'Account Settings', edit_user_registration_path %> |
+  <%= form_for(:destroy_session, url: destroy_user_session_path, method: :delete) do |f| %>
+  <%= f.submit "Sign Out", class: "btn btn-danger" %>
+<% end %>
+
+<% else %>
+  <%= link_to 'Sign Up', new_user_registration_path %> |
+  <%= link_to 'Log In', new_user_session_path %>
+<% end %>
+
+<!-- app/views/home/index.html.erb -->
+<div class="container mt-4">
+  <!-- Top Games -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h3 class="card-title">Top 10 Games in the Last 2 Weeks</h3>
+        <div class="d-flex overflow-auto">
+        <% if @top_games.any? %>
+            <% @top_games.each do |game| %>
+            <div class="card mb-3" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title"><%= game["name"] %></h5>
+                <p class="card-text">Developer: <%= game["developer"] %></p>
+                <p class="card-text">Publisher: <%= game["publisher"] %></p>
+                <p class="card-text">Players (2 Weeks): <%= game["average_2weeks"] %></p>
+                <p class="card-text">Current Players (CCU): <%= game["ccu"] %></p>
+                </div>
+            </div>
+            <% end %>
+        <% else %>
+            <p>No games found or there was an issue fetching data.</p>
+        <% end %>
+    </div>
+  </div>
+</div>
