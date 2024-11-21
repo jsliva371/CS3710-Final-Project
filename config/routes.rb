@@ -1,20 +1,25 @@
 Rails.application.routes.draw do
-  resources :profiles
+  # Devise routes for user authentication
   devise_for :users
 
+  # Profiles routes with nested games and search functionality
   resources :profiles do
-    resources :games, only: [:new, :create]
+    collection do
+      get :search # Adds a /profiles/search route for searching profiles
+    end
+    resources :games, only: [:new, :create] # Nested routes for adding games to a profile
   end
+
+  # Standalone games routes for editing, updating, and destroying games
   resources :games, only: [:edit, :update, :destroy]
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Steam authentication callback routes
   get '/auth/steam/callback', to: 'sessions#create'
-  get '/auth/failure', to: redirect('/')  
-  
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  get '/auth/failure', to: redirect('/')
 
-  # Defines the root path route ("/")
+  # Health check route
+  get "up", to: "rails/health#show", as: :rails_health_check
+
+  # Root path
   root "home#index"
 end

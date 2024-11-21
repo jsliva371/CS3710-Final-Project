@@ -65,6 +65,19 @@ class ProfilesController < ApplicationController
     redirect_to profiles_path, status: :see_other, notice: "Profile was successfully destroyed."
   end
 
+  def search
+    @profiles = Profile.all
+  
+    if params[:name].present?
+      @profiles = @profiles.where("username LIKE ?", "%#{params[:name]}%")
+    end
+  
+    if params[:game].present?
+      @profiles = @profiles.joins(:games).where("games.name LIKE ?", "%#{params[:game]}%")
+    end
+  end
+  
+
   # POST /profiles/:id/games
   def create_game
     @profile = current_user.profile

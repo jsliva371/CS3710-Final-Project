@@ -1,4 +1,4 @@
-class CreateGames < ActiveRecord::Migration[7.1]
+class GameFix < ActiveRecord::Migration[7.1]
   def change
     create_table :games do |t|
       t.references :profile, null: false, foreign_key: true

@@ -1,0 +1,41 @@
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Find Gamers</h1>
+
+  <!-- Search Form -->
+  <div class="card p-4 shadow-sm mb-4">
+    <%= form_with url: search_profiles_path, method: :get, local: true, class: "row g-3" do %>
+      <div class="col-md-6">
+        <%= label_tag :name, "Search by Name", class: "form-label" %>
+        <%= text_field_tag :name, params[:name], class: "form-control", placeholder: "Enter a name" %>
+      </div>
+      <div class="col-md-6">
+        <%= label_tag :game, "Search by Game", class: "form-label" %>
+        <%= text_field_tag :game, params[:game], class: "form-control", placeholder: "Enter a game" %>
+      </div>
+      <div class="col-12 text-center">
+        <%= submit_tag "Search", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Search Results -->
+  <% if @profiles.present? %>
+    <h2 class="text-center">Search Results</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <% @profiles.each do |profile| %>
+        <div class="col">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title"><%= profile.username %></h5>
+              <p class="card-text">
+                <strong>Platforms:</strong> <%= profile.platforms&.join(", ") || "None" %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted text-center">No profiles found matching your search criteria.</p>
+  <% end %>
+</div>

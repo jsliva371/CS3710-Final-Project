@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_17_065903) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_20_230720) do
   create_table "games", force: :cascade do |t|
     t.integer "profile_id", null: false
     t.string "name"
     t.string "rank"
     t.string "main"
-    t.text "achievements"
+    t.text "achievements", default: ""
     t.date "join_date"
-    t.boolean "is_wishlist"
+    t.boolean "is_wishlist", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_games_on_profile_id"
@@ -29,9 +29,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_17_065903) do
     t.string "platforms"
     t.text "bio"
     t.integer "user_id", null: false
+    t.string "steam_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "steam_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
