@@ -1,15 +1,27 @@
 <h2>Log in</h2>
 
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <%= f.label :email %><br />
+  <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <% if f.object.errors[:email].any? %>
+    <div class="error"><%= f.object.errors[:email].join(', ') %></div>
+  <% end %>
   </div>
 
   <div class="field">
     <%= f.label :password %><br />
     <%= f.password_field :password, autocomplete: "current-password" %>
+    <% if f.object.errors[:password].any? %>
+      <div class="error"><%= f.object.errors[:password].join(', ') %></div>
+    <% end %>
   </div>
 
   <% if devise_mapping.rememberable? %>

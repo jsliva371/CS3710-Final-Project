@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_20_230720) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_28_234125) do
+  create_table "friends", force: :cascade do |t|
+    t.integer "profile_id", null: false
+    t.integer "friend_profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_profile_id"], name: "index_friends_on_friend_profile_id"
+    t.index ["profile_id", "friend_profile_id"], name: "index_friends_on_profile_id_and_friend_profile_id", unique: true
+    t.index ["profile_id"], name: "index_friends_on_profile_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.integer "profile_id", null: false
     t.string "name"
@@ -18,7 +28,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_20_230720) do
     t.string "main"
     t.text "achievements", default: ""
     t.date "join_date"
-    t.boolean "is_wishlist", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_games_on_profile_id"
@@ -32,6 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_20_230720) do
     t.string "steam_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "wishlist"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -49,6 +59,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_20_230720) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "friends", "profiles"
+  add_foreign_key "friends", "profiles", column: "friend_profile_id"
   add_foreign_key "games", "profiles"
   add_foreign_key "profiles", "users"
 end

@@ -2,13 +2,16 @@
   <!-- Profile Card -->
   <div class="card mb-4">
     <div class="card-body">
-      <h2 class="card-title"><%= @profile.username %></h2>
-      <p class="card-text"><strong>Bio:</strong> <%= @profile.bio %></p>
+      <h2 class="card-title" aria-label="Username: <%= @profile.username %>"><%= @profile.username %></h2>
+      <p class="card-text">
+        <strong>Bio:</strong> 
+        <span aria-label="User bio: <%= @profile.bio %>"><%= @profile.bio %></span>
+      </p>
       
       <h5 class="card-title mt-3">Platforms</h5>
-      <ul class="list-group">
+      <ul class="list-group" aria-label="Platforms list">
         <% @profile.platforms.each do |platform| %>
-          <li class="list-group-item"><%= platform %></li>
+          <li class="list-group-item" aria-label="Platform: <%= platform %>"><%= platform %></li>
         <% end %>
       </ul>
 
@@ -23,28 +26,36 @@
     <div class="card mt-4">
       <div class="card-body">
         <h3 class="card-title">Recently Played Steam Games</h3>
-        <ul class="list-group">
+        <ul class="list-group" aria-label="Recently played games">
           <% @recent_games.each do |game| %>
             <li class="list-group-item">
-              <img src="http://media.steampowered.com/steamcommunity/public/images/apps/<%= game['appid'] %>/<%= game['img_icon_url'] %>.jpg" alt="<%= game['name'] %> Icon" width="30" class="mr-2" />
-              <strong><%= game["name"] %></strong> - <%= '%.2f' % (game["playtime_2weeks"].to_f / 60) %> hours played
+              <img src="http://media.steampowered.com/steamcommunity/public/images/apps/<%= game['appid'] %>/<%= game['img_icon_url'] %>.jpg" 
+                   alt="<%= game['name'] %> Icon" 
+                   width="30" 
+                   class="mr-2" 
+                   aria-hidden="true" />
+              <strong aria-label="Game name: <%= game['name'] %>"><%= game["name"] %></strong> 
+              - 
+              <span aria-label="Playtime in last two weeks: <%= '%.2f' % (game['playtime_2weeks'].to_f / 60) %> hours">
+                <%= '%.2f' % (game["playtime_2weeks"].to_f / 60) %> hours played
+              </span>
             </li>
           <% end %>
         </ul>
       </div>
     </div>
   <% else %>
-    <p class="text-muted"> Add your steam ID in profile to see your activity. Your Steam account must be public to show this information.</p>
+    <p class="text-muted" aria-label="No recent games message">Add your Steam ID in profile to see your activity. Your Steam account must be public to show this information.</p>
   <% end %>
-  
+
   <!-- Games Card -->
   <div class="card">
     <div class="card-body">
       <h3 class="card-title">Game Stats Showcase</h3>
       <% if @profile.games.any? %>
-        <div class="d-flex overflow-auto">
+        <div class="d-flex overflow-auto" aria-label="Game stats">
           <% @profile.games.each do |game| %>
-            <div class="card mb-3" style="width: 18rem;">
+            <div class="card mb-3" style="width: 18rem;" aria-label="Game: <%= game.name %>">
               <div class="card-body">
                 <h5 class="card-title"><%= game.name %></h5>
                 <p class="card-text"><strong>Rank:</strong> <%= game.rank %></p>
@@ -52,9 +63,9 @@
                 <p class="card-text"><strong>Join Date:</strong> <%= game.join_date %></p>
                 <% if game.achievements.present? %>
                   <p class="card-text"><strong>Achievements:</strong></p>
-                  <ul>
+                  <ul aria-label="Achievements list">
                     <% game.achievements.each do |achievement| %>
-                      <li><%= achievement %></li>
+                      <li aria-label="Achievement: <%= achievement %>"><%= achievement %></li>
                     <% end %>
                   </ul>
                 <% end %>
@@ -72,7 +83,30 @@
       <% end %>
       
       <div class="mt-3">
-        <%= link_to "Add New Game", new_profile_game_path(@profile), class: "btn btn-primary" %>
+        <%= link_to "Add New Game", new_profile_game_path(@profile), class: "btn btn-primary"%>
+      </div>
+    </div>
+  </div>
+
+  <!-- Friends List Card -->
+  <div class="card mt-4">
+    <div class="card-body">
+      <h3 class="card-title">Friends List</h3>
+      <% if @profile.friend_profiles.any? %>
+        <ul class="list-group" aria-label="Friends list">
+          <% @profile.friend_profiles.each do |friend| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center" aria-label="Friend: <%= friend.username %>">
+              <%= link_to friend.username, profile_path(friend), class: "text-decoration-none" %>
+              <%= button_to "Remove Friend", friend_path(friend), method: :delete, class: "btn btn-danger btn-sm" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted" aria-label="No friends message">You don't have any friends yet. Add friends to build your list!</p>
+      <% end %>
+
+      <div class="mt-3">
+        <%= link_to "Search for Profiles to Add Friends", search_profiles_path, class: "btn btn-primary" %>
       </div>
     </div>
   </div>

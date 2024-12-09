@@ -15,5 +15,5 @@ class Game < ApplicationRecord
     self.achievements ||= []
   end
 
-  validates :name, :rank, :main, :join_date, presence: true
+  validates :name, :rank, :main, presence: true
 end

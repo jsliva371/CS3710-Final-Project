@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'devise'
 # Assuming you have not yet modified this file, each configuration option below
 # is set to its default value. Note that some are commented out while others
 # are not: uncommented lines are intended to protect your configuration from
@@ -310,4 +310,8 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+
+  config.secret_key = '33927e0c82124bb0dd36c5222b10c38a6cb521c57cbfb4343b60d4d7f8d3006b63c51bd5dac365b6151f8b0cad148c856bd8a8be47b0c5783602092fd1accbcd'
+
 end

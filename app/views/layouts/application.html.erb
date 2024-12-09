@@ -14,53 +14,60 @@
   <body>
     <!-- Navigation Banner -->
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="<%= root_path %>">Gamer Finder</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <% if user_signed_in? %>
-                <% if current_user.profile.present? %>
-                  <li class="nav-item">
-                    <%= link_to "About Me", profile_path(current_user.profile), class: "nav-link" %>
-                  </li>
-                <% else %>
-                  <li class="nav-item">
-                    <%= link_to "Create Profile", new_profile_path, class: "nav-link" %>
-                  </li>
-                <% end %>
-                <li class="nav-item">
-                  <%= link_to "Profiles", search_profiles_path, class: "nav-link" %>
-                </li>
-                <li class="nav-item">
-                  <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link" %>
-                </li>
-              <% else %>
-                <li class="nav-item">
-                  <%= link_to "Sign In", new_user_session_path, class: "nav-link" %>
-                </li>
-                <li class="nav-item">
-                  <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="<%= root_path %>" aria-label="Gamer Finder Home">Gamer Finder</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation menu"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <% if user_signed_in? %>
+            <% if current_user.profile.present? %>
+              <li class="nav-item">
+                <%= link_to "About Me", profile_path(current_user.profile), class: "nav-link", aria: { label: "Go to your About Me page" } %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Wishlist", wishlist_profile_path(current_user.profile), class: "nav-link", aria: { label: "View your Wishlist" } %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Create Profile", new_profile_path, class: "nav-link", aria: { label: "Create your profile" } %>
+              </li>
+            <% end %>
+            <li class="nav-item">
+              <%= link_to "Profiles", search_profiles_path, class: "nav-link", aria: { label: "Search for other user profiles" } %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Account Settings", edit_user_registration_path, class: "nav-link", aria: { label: "Go to Account Settings" } %>
+            </li>
+            <li class="nav-item">
+              <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link", aria: { label: "Sign out of your account" } %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Sign In", new_user_session_path, class: "nav-link", aria: { label: "Sign in to your account" } %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign Up", new_user_registration_path, class: "nav-link", aria: { label: "Create a new account" } %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
 
-    <!-- Page Content -->
+  
+  <!-- Page Content -->
     <div class="content">
       <%= yield %> <!-- This renders the page-specific content -->
     </div>

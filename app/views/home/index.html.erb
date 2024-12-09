@@ -1,40 +1,81 @@
-<h1>Home Page</h1>
-<h3>Here's a bunch of buttons for you</h3>
-
-<% if user_signed_in? %>
-  <p>Welcome back, <%= current_user.firstname %>!</p>
-  <%= link_to 'Account Settings', edit_user_registration_path %> |
-  <%= form_for(:destroy_session, url: destroy_user_session_path, method: :delete) do |f| %>
-  <%= f.submit "Sign Out", class: "btn btn-danger" %>
-<% end %>
-
-<% else %>
-  <%= link_to 'Sign Up', new_user_registration_path %> |
-  <%= link_to 'Log In', new_user_session_path %>
-<% end %>
-
-<!-- app/views/home/index.html.erb -->
 <div class="container mt-4">
-  <!-- Top Games -->
-  <div class="card mb-4">
+  <h1>Home Page</h1>
+  <h3>Here's a bunch of stuff for you</h3>
+
+  <% if user_signed_in? %>
+    <p>Welcome back, <%= current_user.firstname %>!</p>
+    <%= link_to 'Account Settings', edit_user_registration_path, class: "btn btn-secondary me-2" %>
+    <%= form_for(:destroy_session, url: destroy_user_session_path, method: :delete) do |f| %>
+      <%= f.submit "Sign Out", class: "btn btn-danger" %>
+    <% end %>
+  <% else %>
+    <%= link_to 'Sign Up', new_user_registration_path, class: "btn btn-primary me-2" %>
+    <%= link_to 'Log In', new_user_session_path, class: "btn btn-secondary" %>
+  <% end %>
+
+  <!-- Top Games Section -->
+  <div class="card mt-4">
     <div class="card-body">
-      <h3 class="card-title">Top 10 Games in the Last 2 Weeks</h3>
-        <div class="d-flex overflow-auto">
+      <h3 class="card-title text-center">Top Games in the Last 2 Weeks</h3>
+      <div class="row mt-4">
         <% if @top_games.any? %>
-            <% @top_games.each do |game| %>
-            <div class="card mb-3" style="width: 18rem;">
-                <div class="card-body">
-                <h5 class="card-title"><%= game["name"] %></h5>
-                <p class="card-text">Developer: <%= game["developer"] %></p>
-                <p class="card-text">Publisher: <%= game["publisher"] %></p>
-                <p class="card-text">Players (2 Weeks): <%= game["average_2weeks"] %></p>
-                <p class="card-text">Current Players (CCU): <%= game["ccu"] %></p>
+          <% @top_games.each do |game| %>
+            <div class="col-md-6 col-lg-4 mb-4">
+              <!-- Game Card -->
+              <div class="card h-100 shadow-sm">
+                <!-- Game Image -->
+                <a href="https://store.steampowered.com/app/<%= game['appid'] %>" 
+                   target="_blank" 
+                   class="text-decoration-none text-dark">
+                  <img 
+                    src="https://cdn.cloudflare.steamstatic.com/steam/apps/<%= game['appid'] %>/header.jpg" 
+                    class="card-img-top img-fluid" 
+                    alt="<%= game['name'] %> image">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= game["name"] %></h5>
+                    <p class="card-text">
+                      <strong>Developer:</strong> <%= game["developer"] || "N/A" %><br>
+                      <strong>Publisher:</strong> <%= game["publisher"] || "N/A" %><br>
+                      <strong>Players (2 Weeks):</strong> <%= game["average_2weeks"] || "N/A" %><br>
+                      <strong>Current Players (CCU):</strong> <%= game["ccu"] || "N/A" %>
+                    </p>
+                  </div>
+                </a>
+                <!-- Wishlist Button -->
+                <div class="text-center mb-2">
+                  <% if user_signed_in? %>
+                    <% if current_user.profile.present? %>
+                      <%= button_to "Add to Wishlist", 
+                          add_to_wishlist_profile_path(
+                            @profile, 
+                            appid: game["appid"], 
+                            name: game["name"], 
+                            developer: game["developer"], 
+                            publisher: game["publisher"], 
+                            players_2weeks: game["average_2weeks"], 
+                            current_players: game["ccu"]
+                          ), 
+                          method: :post, 
+                          class: "btn btn-primary btn-sm" 
+                      %>
+                    <% else %>
+                      <p class="text-muted mt-2">Create a profile to add games to your wishlist.</p>
+                      <%= link_to "Create Profile", new_profile_path, class: "btn btn-secondary btn-sm mt-2" %>
+                    <% end %>
+                  <% else %>
+                    <p class="text-muted mt-2">Sign in to add games to your wishlist.</p>
+                    <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary btn-sm mt-2" %>
+                  <% end %>
                 </div>
+              </div>
             </div>
-            <% end %>
+          <% end %>
         <% else %>
-            <p>No games found or there was an issue fetching data.</p>
+          <div class="col-12">
+            <p class="alert alert-warning text-center">No games found or there was an issue fetching data.</p>
+          </div>
         <% end %>
+      </div>
     </div>
   </div>
 </div>

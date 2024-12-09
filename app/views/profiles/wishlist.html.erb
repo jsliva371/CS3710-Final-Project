@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <h1 class="text-center mb-4"><%= @profile.username %>'s Wishlist</h1>
+
+  <% if @wishlist.present? %>
+    <div class="row">
+      <% @wishlist.each do |game| %>
+        <div class="col-md-6 col-lg-4 mb-5">
+          <!-- Card Link -->
+          <a href="https://store.steampowered.com/app/<%= game["appid"] %>" 
+             target="_blank" 
+             class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+              <!-- Game Image -->
+              <img 
+                src="https://cdn.cloudflare.steamstatic.com/steam/apps/<%= game["appid"] %>/header.jpg" 
+                class="card-img-top img-fluid" 
+                alt="<%= game["name"] %> image">
+              <div class="card-body">
+                <h5 class="card-title"><%= game["name"] %></h5>
+                <p class="card-text">
+                  <strong>Developer:</strong> <%= game["developer"] || "N/A" %><br>
+                  <strong>Publisher:</strong> <%= game["publisher"] || "N/A" %><br>
+                  <strong>Players (2 Weeks):</strong> <%= game["players_2weeks"] || "N/A" %><br>
+                  <strong>Current Players (CCU):</strong> <%= game["current_players"] || "N/A" %>
+                </p>
+              </div>
+            </div>
+          </a>
+          <!-- Remove Button -->
+          <div class="text-center mt-2">
+            <%= button_to "Remove from Wishlist", 
+                remove_from_wishlist_profile_path(@profile, appid: game["appid"]), 
+                method: :delete, 
+                class: "btn btn-danger btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-warning text-center" role="alert">
+      Your wishlist is empty!
+    </div>
+  <% end %>
+</div>
